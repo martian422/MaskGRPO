@@ -1,0 +1,102 @@
+run_name: 'null'
+
+wandb:
+  entity: null
+#   run_id: ${run_name}
+  resume: 'auto'
+
+experiment:
+    project: mmada-SFT
+    name: ${run_name}
+    output_dir: outputs/${run_name}
+    max_train_examples_t2i: 40000000
+    max_train_examples_mmu: 40000000
+    save_every: 1000
+    eval_every: 1000
+    generate_every: 500
+    log_every: 10
+    log_grad_norm_every: 25
+    resume_from_checkpoint: "latest"
+
+model:
+    vq_model:
+        type: "magvitv2"
+        vq_model_name: "/mydata/models/magvitv2"
+    mmada:
+        pretrained_model_path: "/mydata/models/mmada-8b-base"
+        w_clip_vit: False
+        new_vocab_size: 134656
+        llm_vocab_size: 126464
+        codebook_size: 8192
+        num_vq_tokens: 1024
+        num_new_special_tokens: 0
+        tie_word_embeddings: False
+
+    gradient_checkpointing: True
+
+dataset:
+    gen_type: "t2i"
+    und_type: "captioning"
+    combined_loader_mode: "max_size_cycle"
+    params:
+        train_t2i_shards_path_or_url: "/data/dataset/Echo-4o/Instruction-Following-Image/images/*.tar"
+        # "/data/dataset/Echo-4o/Instruction-Following-Image/images/*.tar"
+        # "/data/dataset/flux-dev-portrait/wds/part{0..9}.tar"
+        train_mmu_shards_path_or_url: "" 
+        train_lm_shards_path_or_url: ""
+        add_caption_prompt: True
+        external_caption_path: "/data/dataset/Echo-4o/Instruction-Following-Image/Instruction-Following-Image.jsonl"
+        external_journeydb_caption_path: ""
+        external_laion12m_caption_path: ""
+        external_cc12m_caption_path: ""
+        validation_prompts_file: "eval/validation_prompts/mix-sft.txt"
+        mmu_image_root: ""
+        shuffle_buffer_size: 100
+        num_workers: 8
+        resolution: 512
+        pin_memory: True
+        persistent_workers: True
+
+    preprocessing:
+        max_seq_length: 256 # for text tokens
+        resolution: 512
+        center_crop: False
+        random_flip: False
+
+optimizer:
+    name: adamw
+    params: # default adamw params
+        learning_rate: 3e-6
+        scale_lr: False # scale learning rate by total batch size
+        beta1: 0.9
+        beta2: 0.999
+        weight_decay: 1e-3
+        epsilon: 1e-8
+
+lr_scheduler:
+    scheduler: "constant_with_warmup"
+    params:
+        learning_rate: ${optimizer.params.learning_rate}
+        warmup_steps: 50
+        min_lr_scale: 0.5
+
+training:
+    gradient_accumulation_steps: 2
+    noise_type: "mask"
+    batch_size_t2i: 6
+    batch_size_lm: 2
+    batch_size_mmu: 6
+    mixed_precision: "bf16"
+    enable_tf32: True
+    seed: 24601
+    max_train_steps: 4000
+    overfit_one_batch: False
+    cond_dropout_prob: 0.1
+    min_masking_rate: 0.3
+    label_smoothing: 0.0
+    max_grad_norm: 1
+    guidance_scale: 4.0
+    generation_timesteps: 18
+    t2i_coeff: 1.0
+    lm_coeff: 0.1
+    mmu_coeff: 1.0

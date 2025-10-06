@@ -1,0 +1,2 @@
+James has 7 apples. 4 of them are red, and 3 of them are green. If he chooses 2 apples at random, what is the probability that both the apples he chooses are green?\n
+Which drink has the lowest pH value, A. red wine. B. beer. C. milk. D. soda water.
