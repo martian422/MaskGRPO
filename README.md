@@ -26,7 +26,7 @@ pip install -r requirements.txt
 pip install git+https://github.com/huggingface/trl.git@0f88c179e30b3439467942a08c3190f624d5c423
 ```
 
-Then, download the MMaDA and LLaDA checkpoints, and **update related paths in `configs/*.yaml`** and **`scripts/train/*.sh`** accordingly.
+Then, download the [MMaDA](https://huggingface.co/Gen-Verse/MMaDA-8B-Base) and [LLaDA](https://huggingface.co/GSAI-ML/LLaDA-8B-Instruct) checkpoints, and **update related paths in `configs/*.yaml`** and **`scripts/train/*.sh`** accordingly.
 
 You may also need to pre-download or prepare the datasets you want. Please refer to [data](training/data.py) or [data_utils](grpo/data_utils.py) for data management details.
 
