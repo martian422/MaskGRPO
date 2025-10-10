@@ -484,7 +484,7 @@ def geneval_score(device):
     from io import BytesIO
     import pickle
 
-    batch_size = 64 # you need to sync this with the global design. FIXME
+    batch_size = 64
     url = "http://127.0.0.1:18085"
     sess = requests.Session()
     retries = Retry(
@@ -556,7 +556,7 @@ def hpsv3_remote(device):
     from io import BytesIO
     import pickle
 
-    batch_size = 64 # you need to sync this with the global design. FIXME
+    batch_size = 64
     url = "http://127.0.0.1:18087"
     sess = requests.Session()
     retries = Retry(
