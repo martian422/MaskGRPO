@@ -37,6 +37,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument("--task", required=True, choices=['ImageReward','GenEval','DPG','HPS','HPSv3'], help="Task to run.")
     parser.add_argument("--path", default='/data/models/mmada-8b-base', help="The folder to load the model.")
+    parser.add_argument("--ckpt_path", default=None, help="The folder to load the lora model.")
     parser.add_argument("--cfg", default=4.0, type=float, help="cfg for t2i generation.")
     parser.add_argument("--sample_steps", default=16, type=int, help="number of sampling steps for t2i generation.")
     parser.add_argument("--sample_per_prompt", default=5, type=int, help="number of samples per prompt for t2i generation.")
@@ -85,9 +86,9 @@ if __name__ == '__main__':
     save_dir = os.path.join('generated_samples', signature, f's{sample_steps}-cfg{cfg}')
     os.makedirs(save_dir, exist_ok=True)
     if args.dual:
-        mvtm_dir = os.path.join(save_dir, 'mvtm-echo-base')
+        mvtm_dir = os.path.join(save_dir, 'mvtm-lora-base')
         os.makedirs(mvtm_dir, exist_ok=True)
-    ddpm_dir = os.path.join(save_dir, 'ddpm-echo-base')
+    ddpm_dir = os.path.join(save_dir, 'ddpm-lora-base')
     os.makedirs(ddpm_dir, exist_ok=True)
 
     device = distributed_state.device
@@ -100,6 +101,9 @@ if __name__ == '__main__':
     vq_model.requires_grad_(False)
     vq_model.eval()
     model = MMadaModelLM.from_pretrained(model_path, torch_dtype=torch.bfloat16)
+    if args.ckpt_path is not None:
+        from peft import PeftModel
+        model = PeftModel.from_pretrained(model, args.ckpt_path, torch_dtype=torch.bfloat16)
 
     model.to(device)
 
