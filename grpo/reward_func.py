@@ -544,7 +544,7 @@ def geneval_score(device):
                 all_group_rewards_dict[key].extend(value)
         all_group_rewards_dict = dict(all_group_rewards_dict)
 
-        return torch.tensor(all_strict_rewards)
+        return torch.tensor(all_scores)
 
     return _geneval_score
 
