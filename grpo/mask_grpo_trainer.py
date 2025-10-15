@@ -662,28 +662,28 @@ class MaskGRPOTrainer(GRPOTrainer):
         return noisy_batch, to_mask
 
     def get_logits(self, model, batch, prompt_index, cfg_scale, mask_id):
-        if cfg_scale > 0.0 and self.task =='t2i': # FIXME
-            # raise ValueError('Please handle this before running.')
-            cond_logits = model(batch).logits #Now its a hack to save memory. 
-            uncond_batch = batch.clone()
-            uncond_batch[:,prompt_index.bool()]=126093
-            uncond_batch[:,-1029:-1025] = torch.tensor([126088,126080,126081,126084]).to(batch.device)
-            uncond_logits = model(uncond_batch).logits
-            logits = (1 + cfg_scale) * cond_logits - cfg_scale * uncond_logits
-            return logits
-        elif cfg_scale > 0.0:
-            # we have not tested cfg_scale for t2t tasks.
-            assert len(prompt_index) == batch.shape[1]
-            prompt_index = prompt_index.unsqueeze(0).repeat(batch.shape[0], 1)
-            un_batch = batch.clone()
-            un_batch[prompt_index] = mask_id
-            batch = torch.cat([batch, un_batch])
+        # if cfg_scale > 0.0 and self.task =='t2i': # FIXME
+        #     # raise ValueError('Please handle this before running.')
+        #     cond_logits = model(batch).logits #Now its a hack to save memory. 
+        #     uncond_batch = batch.clone()
+        #     uncond_batch[:,prompt_index.bool()]=126093
+        #     uncond_batch[:,-1029:-1025] = torch.tensor([126088,126080,126081,126084]).to(batch.device)
+        #     uncond_logits = model(uncond_batch).logits
+        #     logits = (1 + cfg_scale) * cond_logits - cfg_scale * uncond_logits
+        #     return logits
+        # elif cfg_scale > 0.0:
+        #     # we have not tested cfg_scale for t2t tasks.
+        #     assert len(prompt_index) == batch.shape[1]
+        #     prompt_index = prompt_index.unsqueeze(0).repeat(batch.shape[0], 1)
+        #     un_batch = batch.clone()
+        #     un_batch[prompt_index] = mask_id
+        #     batch = torch.cat([batch, un_batch])
 
         logits = model(batch).logits
 
-        if cfg_scale > 0.0:
-            logits, un_logits = torch.chunk(logits, 2, dim=0)
-            logits = un_logits + (cfg_scale + 1) * (logits - un_logits)
+        # if cfg_scale > 0.0:
+        #     logits, un_logits = torch.chunk(logits, 2, dim=0)
+        #     logits = un_logits + (cfg_scale + 1) * (logits - un_logits)
         return logits
 
     def get_num_transfer_tokens(self, mask_index, steps):
