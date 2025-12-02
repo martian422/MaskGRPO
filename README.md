@@ -17,7 +17,7 @@ In this repo, we release:
   4. Detailed SFT, RL and Evaluation scripts.
 
 ## 🚀 Quick Start
-First, set up the enviroment with python==3.10 (please first read the comments in [requirements](requirements.txt)):
+First, set up the enviroment with python==3.10 (supposing you are using cu128. For other versions, please read the comments in [requirements](requirements.txt)):
 ```
 conda create -n maskgrpo python==3.10
 conda activate maskgrpo
