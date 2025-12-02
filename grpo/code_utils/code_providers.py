@@ -11,7 +11,7 @@ import abc
 import asyncio
 from typing import List, Optional
 
-from code_utils import is_e2b_available, is_morph_available
+from grpo.code_utils import is_e2b_available, is_morph_available
 
 import re
 
@@ -97,7 +97,8 @@ class E2BProvider(CodeExecutionProvider):
                     else:
                         reward = 0.0
                     rewards.append(reward)
-                except Exception:
+                except Exception as e:
+                    # there may be errors, you can fix it for execution.logs.stdout.
                     rewards.append(None)
             return rewards
 
@@ -352,7 +353,7 @@ def get_provider(provider_type: str = "e2b", **kwargs) -> CodeExecutionProvider:
 
     if provider_type == "e2b":
         # Extract E2B-specific arguments
-        e2b_router_url = kwargs.pop("e2b_router_url", "127.0.0.1:8000")
+        e2b_router_url = kwargs.pop("e2b_router_url", "127.0.0.1:23456")
         return E2BProvider(
             num_parallel=num_parallel,
             e2b_router_url=e2b_router_url,

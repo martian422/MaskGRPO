@@ -8,3 +8,4 @@ playground
 checkpoints
 tools
 .DS_Store
+*.log

@@ -150,7 +150,7 @@ def parse_args():
     """
     parser = argparse.ArgumentParser()
     parser.add_argument("--host", default="127.0.0.1")
-    parser.add_argument("--port", type=int, default=8000)
+    parser.add_argument("--port", type=int, default=23456)
     parser.add_argument("--max_num_sandboxes", type=int, default=4000)
     return parser.parse_args()
 

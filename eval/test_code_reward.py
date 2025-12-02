@@ -5,7 +5,7 @@ sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
 import torch
 from transformers import AutoTokenizer, AutoModel
 from datasets import load_dataset
-from reward_func import code_reward
+from grpo.reward_func import code_reward
 from models.generate_llada import generate
 from accelerate import PartialState
 from torch.utils.data import DataLoader, DistributedSampler
@@ -21,13 +21,11 @@ GEN_LEN = 256
 STEPS = 256
 BLK_LEN = 32
 CKPT = 5000
-# 加载模型和 tokenizer
-# model_path = f"/home/ZhangMu/Workspace/repos/mmada-mcat/outputs/acecode_maskgrpo_min0.6_256_max/checkpoint-{CKPT}"
+
 model_path = "/ssd/models/llada-8b-instruct"
 model = AutoModel.from_pretrained(model_path, trust_remote_code=True, torch_dtype=torch.bfloat16).to(device).eval()
 tokenizer = AutoTokenizer.from_pretrained(model_path, trust_remote_code=True)
 
-# 加载 MBPP 数据集
 dataset = load_dataset("json", data_files="dataset/MBPP/sanitized-mbpp.json")["train"]
 
 def make_conversation(example, prompt_column: str = "prompt"):

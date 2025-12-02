@@ -37,7 +37,7 @@ bash scripts/train/t2t_grpo_train.sh
 ```
 For coding, you have to first launch a sandbox using
 ```
-bash scripts/train/run_e2b.sh
+bash scripts/run_e2b.sh
 ```
 then you can run the training script.
 ### 🎨 Image generation (T2I tasks):
@@ -57,9 +57,9 @@ bash scripts/train/t2i_grpo_train_w_server.sh
 ```
 
 ## 🧑‍🏫 Evaluation
-Just run the scripts in scripts/eval, get the results and evaluate them (the MBPP evaluation scripts will be updated soon).
+Just run the scripts in scripts/eval and get the results.
 
-As additional enviroments may need to be installed, please refer to the original benchmark repository for instructions. 
+As additional enviroments may need to be installed for image generation tasks, please refer to the original benchmark repository for instructions. 
 
 Here are more comparisons between the default MaskGIT-style results (before RL) and ours (after RL).
 ![image3](assets/portraits.png)

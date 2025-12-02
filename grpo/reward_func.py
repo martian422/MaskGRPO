@@ -1,6 +1,6 @@
 import numpy as np
 import re
-from math500_utils import remove_boxed, last_boxed_only_string, is_equiv, boxed_in_answer
+from grpo.math500_utils import remove_boxed, last_boxed_only_string, is_equiv, boxed_in_answer
 from transformers import CLIPModel, CLIPProcessor, AutoModel
 from torchvision import transforms
 
@@ -12,7 +12,7 @@ from torchvision.transforms.functional import to_pil_image
 from PIL import Image
 from collections import defaultdict
 
-from code_utils.code_providers import get_provider
+from grpo.code_utils.code_providers import get_provider
 
 def extract_xml_answer(text: str) -> str:
     answer = text.split("<answer>")[-1]
@@ -725,7 +725,7 @@ print("__PASS_RATE__", rate)
     scripts = []
     valid_indices = []
     for i, (reward, completion) in enumerate(zip(format_rewards, completions)):
-        if reward < 1:
+        if reward < 0.5:
             continue
         code = extract_code(completion[-1]["content"])
         tc = kwargs["test_cases"][i]
@@ -748,7 +748,7 @@ print("__PASS_RATE__", rate)
     # 4. fill results into a list of the same length as completions, and keep None for reward=0
     final_results = [0.0] * len(completions)
     for idx, res in zip(valid_indices, results):
-        final_results[idx] = 2 * res
+        final_results[idx] = res
 
     return final_results
 
@@ -761,14 +761,6 @@ def get_code_format_reward(language: str = "python"):
         language: Programming language supported by E2B https://e2b.dev/docs/code-interpreting/supported-languages
     """
     import ast
-    pattern = re.compile(
-        rf"^"
-        r"(?:(?!```)[\s\S])*?"
-        rf"```{language}\n"    # match ```language\n
-        r"(?:(?!```)[\s\S])*?"         # match any character, but not ```
-        rf"```\n$",                     # match ``` and end of string
-        re.DOTALL
-    )
 
     def code_format_reward(completions, **kwargs):
         completion_contents = [completion[0]["content"] for completion in completions]
