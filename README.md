@@ -13,7 +13,7 @@ This is the official implementation of MaskGRPO: [Consolidating Reinforcement Le
 In this repo, we release:
   1. Improved **importance estimation** for reinforcing DDMs with controlled randomness across devices. 
   2. **AR-like reversing** for RL training on math reasoning and coding tasks. 
-  3. **Emerge sampler** for image generation and RL training.
+  3. **Emerge sampler** for image generation and RL training (the principled DDM sampler modified from [MDLM](https://github.com/kuleshov-group/mdlm)).
   4. Detailed SFT, RL and Evaluation scripts.
 
 ## 🚀 Quick Start
