@@ -34,7 +34,6 @@ accelerate launch \
     --main_process_port 23333 grpo/mask_grpo_train.py \
     --config configs/rl.yaml \
     --version uni \
-    --report_to none \
     --min_mask_rate 0.6 \
     --model_path $MODEL_PATH \
     --num_iterations $NUM_ITER \
