@@ -41,7 +41,7 @@ accelerate launch \
     --gradient_accumulation_steps $ACCUMULATION \
     --dataset $DATASET \
     --task t2i \
-    --epsilon 0.001 \
+    --epsilon 0.2 \
     --mean_method grpo \
     --cfg_scale $CFG \
     --run_name $RUN_NAME \
