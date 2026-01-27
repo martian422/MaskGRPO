@@ -8,6 +8,8 @@
  <img src="./assets/banner.png"/>
 </p>
 
+🎉🎉🎉 MaskGRPO is accepted by ICLR 2026. We will be updating this repository with the newest results and checkpoints, stay tuned!
+
 This is the official implementation of MaskGRPO: [Consolidating Reinforcement Learning for Multimodal Discrete Diffusion Models](http://arxiv.org/abs/2510.02880)，an open-sourced framework for SFT and GRPO training of discrete diffusion models (DDMs) including LLaDA and MMaDA.
 
 In this repo, we release:
